@@ -1,0 +1,22 @@
+{
+  "name": "mapa",
+  "version": "1.0.0",
+  "description": "Mapa para la consulta de datos abiertos geográficos",
+  "main": "map_server.js",
+  "scripts": {
+    "start": "node map_server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mxabierto/Mapa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mxabierto/Mapa/issues"
+  },
+  "homepage": "https://github.com/mxabierto/Mapa#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

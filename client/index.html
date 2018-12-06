@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>El mapa de los datos abiertos</title>
+
+
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+
+
+    <!-- webcomponents y polymer -->
+    <script type="text/javascript" src="https://cdn.datos.gob.mx/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link href="https://cdn.datos.gob.mx/bower_components/polymer/polymer.html" rel="import">
+
+    <!-- navbar y footer de DGM -->
+    <link href="https://cdn.datos.gob.mx/bower_components/dgm-navbar/dgm-navbar.html" rel="import">
+    <link href="https://cdn.datos.gob.mx/bower_components/dgm-footer/dgm-footer.html" rel="import">
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script> -->
+
+    <!-- CSS -->
+    <link href="https://cdn.datos.gob.mx/assets/img/favicon.ico" rel="shortcut icon">
+    <link href="https://cdn.datos.gob.mx/assets/css/main.css" rel="stylesheet">
+
+    <!-- Respond.js soporte de media queries para Internet Explorer 8 -->
+    <!-- ie8.js EventTarget para cada nodo en Internet Explorer 8 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ie8/0.2.2/ie8.js"></script>
+    <![endif]-->
+
+
+    <!-- openlayers -->
+    <!-- <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css"> -->
+    <!-- openlayers-popup -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/ol-popup@2.0.0/src/ol-popup.css" /> -->
+    <!-- openlayers-layerswitcher -->
+    <!-- <link rel="stylesheet" href="plugins/layerswitcher/ol-layerswitcher.css"> -->
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <link rel="stylesheet" href="/plugins/simplebutton/leaflet-simple-button.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.65.1/dist/L.Control.Locate.min.css">
+
+
+    <link rel="stylesheet" href="/css/master.css">
+  </head>
+
+  <body class="front">
+
+    <!-- header -->
+    <dgm-navbar></dgm-navbar>
+
+    <!-- content -->
+    <main>
+      <div class="container-fluid">
+        <div id="map"></div>
+      </div>
+    </main>
+
+    <!-- footer -->
+    <dgm-footer></dgm-footer>
+
+    <!-- JS -->
+    <script src="https://cdn.datos.gob.mx/assets/js/main.js"></script>
+
+    <!-- leaflet -->
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+    <script src="/plugins/simplebutton/leaflet-simple-button.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.65.1/src/L.Control.Locate.min.js"></script>
+
+
+    <!-- openlayers -->
+    <!-- <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script> -->
+    <!-- <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script> -->
+    <!-- openlayers-popup -->
+    <!-- <script src="https://unpkg.com/ol-popup@2.0.0"></script> -->
+    <!-- openlayers-layerswitcher -->
+    <!-- <script src="plugins/layerswitcher/ol-layerswitcher.js"></script> -->
+
+    <script src="js/master.js"></script>
+    <script src="js/map.js"></script>
+  </body>
+
+</html>

@@ -1,0 +1,49 @@
+.leaflet-control-simplebutton {
+  background: rgb(57, 60, 62);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  display: block;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  padding: 5px;
+}
+
+.leaflet-control-simplebutton a {
+  color: #FFF;
+  cursor: pointer;
+  line-height: 150%;
+  white-space: nowrap;
+  text-align: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  text-decoration: none;
+  background: transparent;
+  opacity: 0.75;
+}
+
+.leaflet-control-simplebutton a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.leaflet-control-simplebutton a i {
+  pointer-events: none;
+  font-size: inherit;
+}
+
+/* TOUCH */
+
+.leaflet-touch .leaflet-control-simplebutton {
+  width: 44px;
+  height: 44px
+}
+
+.leaflet-touch .leaflet-control-simplebutton a {
+  padding-top: 3px;
+  font-size: 18px;
+  opacity: 1;
+}
