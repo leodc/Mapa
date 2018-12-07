@@ -1,31 +1,56 @@
 /* body{
-  margin-top: -75px;
+margin-top: -75px;
 }
 
 .draw-point {
-  right: 3em;
-  top: .5em;
+right: 3em;
+top: .5em;
 }
 
 #layer_result_list a:hover{
-  cursor: pointer;
+cursor: pointer;
 }
 
 #layer_result_list a{
-  border: 1px solid silver;
-  display: block;
+border: 1px solid silver;
+display: block;
 } */
 
-.mapContainer{
-  position: relative;
+html {
   height: 100%;
+  min-height: 100%;
+}
+
+#mapContainer{
+  max-width: 100000px;
+  padding: 0;
+}
+
+@media (min-width: 992px) {
+  .modal-lg {
+    width: 70%;
+  }
 }
 
 #map{
   width: 100%;
-  height: 500px;
 }
 
 .white-icon{
   color:#FFF;
+}
+
+.title{
+  font-weight: 600;
+}
+
+.result-element{
+  background-color: #f9f9f9;
+  border-radius: 10%;
+  margin-bottom: 10px;
+  border: 5px solid rgba(255, 255, 255, 1);
+}
+
+.result-element:hover{
+  cursor: pointer;
 }
