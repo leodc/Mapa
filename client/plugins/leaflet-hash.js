@@ -1,3 +1,5 @@
+
+
 (function(window) {
 	var HAS_HASHCHANGE = (function() {
 		var doc_mode = window.documentMode;
@@ -14,14 +16,15 @@
 	};
 
 	L.Hash.parseHash = function(hash) {
-		if(hash.indexOf('#map=') === 0) {
+		if(hash.indexOf('#map') === 0) {
 			hash = hash.substr(1);
 		}
 		var args = hash.split("/");
-		if (args.length == 3) {
-			var zoom = parseInt(args[0], 10),
+		if (args.length >= 3) {
+			var zoom = parseInt(args[0].slice("map=".length), 10),
 			lon = parseFloat(args[1]),
 			lat = parseFloat(args[2]);
+			zoom = (zoom < 1) ? 6:zoom;
 			if (isNaN(zoom) || isNaN(lat) || isNaN(lon)) {
 				return false;
 			} else {

@@ -6,45 +6,80 @@ function apiSearch(){
   var insertRow = true;
   var closeRow = false;
 
-  $.getJSON("https://api.datos.gob.mx/v2/ckan-geoserver?pageSize=20&page=100", function(data){
-    data["results"].forEach(function(element){
+  var nameSearchUrl = "https://api.datos.gob.mx/v2/ckan-geoserver?name_resource=/{0}/i";
+  var descriptionSearchUrl = "https://api.datos.gob.mx/v2/ckan-geoserver?description=/{0}/i";
+
+  $("#searchResult").empty();
+
+  $.getJSON( nameSearchUrl.format([text]) , function(nameSearchResponse){
+    $.getJSON( descriptionSearchUrl.format([text]) , function(descriptionSearchResponse){
+      var results = nameSearchResponse["results"].concat( descriptionSearchResponse["results"] );
+
+      var insertRow = true;
+      var closeRow = false;
+
       var html = "";
-      if( insertRow ){
-        html += "<div class='row'>"
-        insertRow = false;
-      }else{
-        closeRow = true;
-      }
+      results.forEach(function(element){
+        if( insertRow ){
+          html = "<div class='row'>"
+          insertRow = false;
+        }else{
+          closeRow = true;
+        }
 
-      // tag
-      html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}', '{1}');\"><div class='col-sm-1'><span class='tag-icon tag-geoespacial'></span></div>".format(element.geoserver, element.name_resource);
+        // tag
+        html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}');\"><div class='col-sm-1'><span class='tag-icon tag-geoespacial'></span></div>".format(element.geoserver);
 
-      // resource info
-      html += "<div class='col-sm-9'><p class='title'>{0}</p><small>{1}</small></div>".format(element.name_resource, element.description);
+        // resource info
+        html += "<div class='col-sm-9'><p class='title'>{0}</p><small>{1}</small></div>".format(element.name_resource, element.description);
 
-      // organization
-      html += "<div class='col-sm-2'><div class='resource-item-org'><strong><a href='{1}'>{0}</a></strong></div></div></div>".format(element.organization.title, "url");
+        // organization
+        html += "<div class='col-sm-2'><div class='resource-item-org'><strong><a href='{1}'>{0}</a></strong></div></div></div>".format(element.organization.title, "url");
 
-      if( closeRow ){
-        html += "</div>"
-        insertRow = true;
-        closeRow = false;
+        if( closeRow ){
+          html += "</div>";
+          insertRow = true;
+          closeRow = false;
 
+          $("#searchResult").append(html);
+        }
+      });
+
+      if( !insertRow ){
+        html += "</div>";
         $("#searchResult").append(html);
       }
-
-
-
-      // addLayerToMap(element.geoserver, element.name_resource);
     });
   });
 }
 
-function addLayerToMap(geoserverId, title){
-  map.addWmsLayer(geoserverId, title);
+function addLayerToMap(geoserverId, color){
+  $.getJSON("https://api.datos.gob.mx/v2/ckan-geoserver?geoserver=" + geoserverId, function(data){
+    data["results"].forEach(function(element){
+      $("#searchMessage").remove();
 
-  $('#addLayerModal').modal("hide");
+      if (window.layers && window.layers[geoserverId]){
+        console.log("La capa ya existe en el mapa");
+
+        var html = '<div class="alert alert-danger" id="searchMessage">Error: La capa ya se encuentra en el mapa</div>';
+        $("#resultHolder").prepend(html);
+      }else{
+        var controlColor = color ? color:"#00cc99";
+        map.addWmsLayer(geoserverId, '<div class="row layerControlHolder"><div class="col-sm-1"><input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/></div><div class="col-sm-11 layerName">{0}</div></div>'.format(element.name_resource, geoserverId, controlColor), element.name_resource, color);
+
+        $('#addLayerModal').modal("hide");
+      }
+    });
+  });
 }
+
+
+function updateLayerColor(geoserverId){
+  var objId = "#{0}-color".format(geoserverId);
+
+  map.updateLayerColor(geoserverId, $( objId ).val());
+}
+
 
 function getUrlParameter(sParam) {
   var sPageURL = window.location.search.substring(1),
@@ -63,6 +98,8 @@ function getUrlParameter(sParam) {
 
 
 $(function(){
+  window.layers = {};
+
   if (!String.prototype.format) {
     String.prototype.format = function() {
       var args = arguments;
@@ -88,24 +125,34 @@ $(function(){
   }
 
 
+  $('#addLayerModal').on('shown.bs.modal', function (e) {
+    $("#inputSearch").focus();
+    $("#searchMessage").remove();
+  });
+
+  $("#inputSearch").keypress(function(e){
+    if(e.which == 13) {
+      apiSearch();
+    }
+  })
+
+  buildMap();
+
   if (getUrlParameter("config")){
     var config = getUrlParameter("config").slice("1", "-1");
 
-    for (geoserverId of config.split(",")){
+    var geoserverId, params, color, initLayers = config.split(",");
 
-      $.getJSON("https://api.datos.gob.mx/v2/ckan-geoserver?geoserver=" + geoserverId, function(data){
-        data["results"].forEach(function(element){
-          addLayerToMap(element.geoserver, element.name_resource);
-        });
-      });
+    window.buildInit = true;
+    window.layersInitCount = initLayers.length;
 
+    for (layerConfig of initLayers){
+      params = layerConfig.split(":");
+
+      geoserverId = params[0];
+      color = params.length == 2 ? "#"+params[1]:null;
+
+      addLayerToMap(geoserverId, color);
     }
   }
-
-  $('#addLayerModal').on('shown.bs.modal', function (e) {
-    $("#searchResult").empty();
-    apiSearch();
-  });
-
-  buildMap();
 });
