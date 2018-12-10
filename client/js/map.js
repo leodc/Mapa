@@ -27,6 +27,17 @@ var sld_body = '<?xml version="1.0" encoding="ISO-8859-1"?> \
                            </Graphic> \
                          </PointSymbolizer> \
                        </Rule> \
+                       <Rule>\
+                         <PolygonSymbolizer>\
+                           <Fill>\
+                             <CssParameter name="fill">{1}</CssParameter>\
+                           </Fill>\
+                           <Stroke> \
+                             <CssParameter name="stroke">#000000</CssParameter> \
+                             <CssParameter name="stroke-width">1</CssParameter> \
+                           </Stroke> \
+                         </PolygonSymbolizer>\
+                       </Rule>\
                       </FeatureTypeStyle>\
                     </UserStyle>\
                   </NamedLayer>\
@@ -94,9 +105,12 @@ function buildLayerControl(addLayers){
   var overlays = {};
 
   if(addLayers){
-    var config = getUrlParameter("config").slice("1", "-1");
+    var config = getUrlParameter("config").slice("1", "-1").split(",");
 
-    for (layerConfig of config.split(",")){
+    var layerConfig;
+    for ( var i = config.length-1; i >= 0; i--){
+      layerConfig = config[i];
+      
       geoserverId = layerConfig.split(":")[0];
       overlays[window.layers[geoserverId]["label"]] = window.layers[geoserverId]["layer"]
     }
