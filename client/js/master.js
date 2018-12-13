@@ -15,42 +15,59 @@ function apiSearch(){
     $.getJSON( descriptionSearchUrl.format([text]) , function(descriptionSearchResponse){
       var results = nameSearchResponse["results"].concat( descriptionSearchResponse["results"] );
 
-      var insertRow = true;
-      var closeRow = false;
-
-      var html = "";
-      results.forEach(function(element){
-        if( insertRow ){
-          html = "<div class='row'>"
-          insertRow = false;
-        }else{
-          closeRow = true;
-        }
-
-        // tag
-        html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}');\"><div class='col-sm-1'><span class='tag-icon tag-geoespacial'></span></div>".format(element.geoserver);
-
-        // resource info
-        html += "<div class='col-sm-9'><p class='title'>{0}</p><small>{1}</small></div>".format(element.name_resource, element.description);
-
-        // organization
-        html += "<div class='col-sm-2'><div class='resource-item-org'><strong><a href='{1}'>{0}</a></strong></div></div></div>".format(element.organization.title, "url");
-
-        if( closeRow ){
-          html += "</div>";
-          insertRow = true;
-          closeRow = false;
-
-          $("#searchResult").append(html);
-        }
-      });
-
-      if( !insertRow ){
-        html += "</div>";
-        $("#searchResult").append(html);
-      }
+      showResult(results);
     });
   });
+}
+
+
+function showResult(results){
+  if( results["results"]){
+    results = results["results"];
+  }
+
+  $("#searchMessage").remove();
+  
+  if(results.length == 0){
+    var html = '<div class="alert alert-danger" id="searchMessage">No se encontro ninguna capa</div>';
+    $("#resultHolder").prepend(html);
+    return;
+  }
+
+  var insertRow = true;
+  var closeRow = false;
+
+  var html = "";
+  results.forEach(function(element){
+    if( insertRow ){
+      html = "<div class='row'>"
+      insertRow = false;
+    }else{
+      closeRow = true;
+    }
+
+    // tag
+    html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}');\"><div class='col-sm-2'><span class='tag-icon tag-geoespacial'></span><br><strong><a href='{2}'>{1}</a></strong></div>".format(element.geoserver,element.organization.title, "url");
+
+    // resource info
+    html += "<div class='col-sm-9'><p class='title'>{0}</p><small>{1}</small></div></div>".format(element.name_resource, element.description);
+
+    // organization
+    // html += "<div class='col-sm-2'></div></div>".format(element.organization.title, "url");
+
+    if( closeRow ){
+      html += "</div>";
+      insertRow = true;
+      closeRow = false;
+
+      $("#searchResult").append(html);
+    }
+  });
+
+  if( !insertRow ){
+    html += "</div>";
+    $("#searchResult").append(html);
+  }
 }
 
 function addLayerToMap(geoserverId, color){
@@ -124,10 +141,18 @@ $(function(){
     $("#map").height( $("html").height() - $("#header").position().top - $("#header").height() - 100 );
   }
 
-
-  $('#addLayerModal').on('shown.bs.modal', function (e) {
+  initialView = true;
+  $("#addLayerModal").on("shown.bs.modal", function (e) {
     $("#inputSearch").focus();
     $("#searchMessage").remove();
+
+    if(initialView){
+      $.getJSON( "https://api.datos.gob.mx/v2/ckan-geoserver?sort=-insert-date&pageSize=10&organization" , showResult);
+
+      initialView = false;
+    }else{
+
+    }
   });
 
   $("#inputSearch").keypress(function(e){
@@ -136,7 +161,9 @@ $(function(){
     }
   })
 
-  buildMap();
+  buildMap(function(){
+
+  });
 
   if (getUrlParameter("config")){
     var config = getUrlParameter("config").slice("1", "-1");

@@ -45,7 +45,7 @@ var sld_body = '<?xml version="1.0" encoding="ISO-8859-1"?> \
 
 
 // init map
-function buildMap(){
+function buildMap(callback){
   var map = L.map("map", {
     zoomControl:false,
     // crs: L.CRS.EPSG4326
@@ -99,6 +99,10 @@ function buildMap(){
   }
 
   window.map = map;
+
+  if(callback){
+    map.whenReady(callback);
+  }
 }
 
 function buildLayerControl(addLayers){
@@ -110,7 +114,7 @@ function buildLayerControl(addLayers){
     var layerConfig;
     for ( var i = config.length-1; i >= 0; i--){
       layerConfig = config[i];
-      
+
       geoserverId = layerConfig.split(":")[0];
       overlays[window.layers[geoserverId]["label"]] = window.layers[geoserverId]["layer"]
     }

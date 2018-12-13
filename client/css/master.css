@@ -28,13 +28,22 @@ html {
 
 .result-element{
   background-color: #f9f9f9;
-  border-radius: 10%;
-  margin-bottom: 10px;
+  border-radius: 5%;
   border: 5px solid rgba(255, 255, 255, 1);
 }
 
 .result-element:hover{
   cursor: pointer;
+}
+
+.result-element div{
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.result-element .tag-icon {
+  margin-top: 10px;
 }
 
 #popupContent{
