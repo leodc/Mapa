@@ -66,3 +66,13 @@ input[type="color"]{
 .layerControlHolder div{
   padding: 0px;
 }
+
+.map-text-button{
+  background: rgb(57, 60, 62);
+  cursor: pointer;
+  width: 200px;
+  height: 30px;
+  color: #FFF;
+  border: 0;
+  font-weight: 600;
+}

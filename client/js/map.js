@@ -157,9 +157,26 @@ function buildButtons(map){
 
 
   // addLayer
-  addButtonToMap(map, "fa-plus", "topleft", function(evt){
-    $('#addLayerModal').modal({})
+  var customControl =  L.Control.extend({
+    options: {
+      position: "topleft"
+    },
+
+    onAdd: function (map) {
+      var container = L.DomUtil.create("input", "map-text-button");
+      container.type="button";
+      container.title="Agregar nueva capa al mapa";
+      container.value="Agregar nueva capa al mapa";
+
+      container.onclick = function(){
+        $("#addLayerModal").modal({});
+      }
+
+      return container;
+    }
   });
+
+  map.addControl(new customControl());
 }
 
 
