@@ -163,9 +163,7 @@ $(function(){
     }
   })
 
-  buildMap(function(){
-
-  });
+  buildMap();
 
   if (getUrlParameter("config")){
     var config = getUrlParameter("config").slice("1", "-1");

@@ -107,6 +107,26 @@ function buildMap(callback){
     map.invalidateSize();
   });
 
+  // dialog position
+  var x = $("#map").width();
+
+  var dialogOptions = {
+    size: [300, parseInt(x/3)],
+    initOpen: false
+  };
+  var dialog = L.control.dialog(dialogOptions).addTo(map);
+  dialog.showResize();
+  dialog.setLocation([20, parseInt(x) - 400]);
+
+  map.updatePopup = function(content){
+    dialog.open();
+    dialog.setContent(content);
+  }
+
+  map.on("dialog:closed", function(evt){
+    window.marker.removeFrom(map);
+  })
+
   window.map = map;
 
   if(callback){
@@ -133,7 +153,7 @@ function buildLabel(title, geoserverId){
                 </div> \
               </div>';
 
-  return html.format(title, geoserverId, window.layers[geoserverId]["color"])
+  return html.format(title, geoserverId, window.layers[geoserverId]["color"]);
 }
 
 

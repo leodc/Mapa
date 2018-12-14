@@ -46,10 +46,10 @@ html {
   margin-top: 10px;
 }
 
-#popupContent{
+/* #popupContent{
   max-height:300px;
   overflow:scroll;
-}
+} */
 
 input[type="color"]{
   width:100%;

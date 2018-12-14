@@ -15,6 +15,14 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
   },
 
   getFeatureInfo: function (evt) {
+    $("#popupContent").remove();
+
+    if(window.marker){
+      window.marker.removeFrom(this._map);
+    }
+
+    window.marker = L.marker(evt.latlng).addTo(this._map);
+
     // Make an AJAX request to the server and hope for the best
     var url = this.getFeatureInfoUrl(evt.latlng),
         showResults = L.Util.bind(this.showGetFeatureInfo, this);
@@ -106,10 +114,12 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
     if( content.features.length > 0) {
 
       if( $("#popupContent").length == 0 ){
-        L.responsivePopup()
-          .setLatLng(latlng)
-          .setContent("<div id='popupContent'>" + popContent + "</div>" )
-          .openOn(this._map);
+        // L.responsivePopup()
+        //   .setLatLng(latlng)
+        //   .setContent("<div id='popupContent'>" + popContent + "</div>" )
+        //   .openOn(this._map);
+
+        this._map.updatePopup("<div id='popupContent'>" + popContent + "</div>");
       }else{
         $("#popupContent").append("<hr>" + popContent);
       }
