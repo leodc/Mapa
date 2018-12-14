@@ -46,9 +46,11 @@ var sld_body = '<?xml version="1.0" encoding="ISO-8859-1"?> \
 
 // init map
 function buildMap(callback){
+  var opacityDefault = 0.8;
+
+
   var map = L.map("map", {
-    zoomControl:false,
-    // crs: L.CRS.EPSG4326
+    zoomControl:false
   }).setView([24.59, -103.14], 5);
 
   var hash = new L.Hash(map);
@@ -59,12 +61,13 @@ function buildMap(callback){
 
   buildButtons(map);
 
-  var layerControl;
-  map.addWmsLayer = function(geoserverId, label, title, color){
+  var layerControl, htmlLegend;
+  map.addWmsLayer = function(geoserverId, title, color){
     var wmsOptions = {
       layers: "ckan:" + geoserverId,
       transparent: true,
-      format: "image/png"
+      format: "image/png",
+      opacity: opacityDefault
     }
 
     if( color != null ){
@@ -72,10 +75,11 @@ function buildMap(callback){
     }
 
     window.layers[geoserverId] = {
-      "label": label,
       "layer": L.tileLayer.betterWms("https://geo.datos.gob.mx/geoserver/ows", wmsOptions).addTo(map),
-      "title": title
+      "title": title,
+      "color": color
     };
+    window.layers[geoserverId]["label"] = buildLabel(title, geoserverId);
 
     if( window.buildInit ){
       if( Object.keys(window.layers).length == window.layersInitCount ){
@@ -95,8 +99,13 @@ function buildMap(callback){
   }
 
   map.updateLayerColor = function(geoserverId, color){
+    window.layers[geoserverId]["color"] = color;
     window.layers[geoserverId]["layer"].setParams({"sld_body": sld_body.format(geoserverId, color)});
   }
+
+  $(window).on("resize", function(){
+    map.invalidateSize();
+  });
 
   window.map = map;
 
@@ -104,6 +113,35 @@ function buildMap(callback){
     map.whenReady(callback);
   }
 }
+
+
+function buildLabel(title, geoserverId){
+  // var html = '<div class="row layerControlHolder"> \
+  //               <div class="col-sm-1"><input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/></div> \
+  //               <div class="col-sm-11 layerName">{0}</div> \
+  //             </div>'
+
+  var html = '<div class="layerControlHolder"> \
+                <div class="layerName">{0}</div> \
+                <div class="row" style="padding-left:15px;"> \
+                  <div class="col-sm-2"> \
+                    <input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/> \
+                  </div> \
+                  <div class="col-sm-5"> \
+                    <input type="range" min="0" max="1" value="0.8" step="0.1" class="slider" id="{1}-range" onchange="updateOpacityLayer(\'{1}\');" > \
+                  </div> \
+                </div> \
+              </div>';
+
+  return html.format(title, geoserverId, window.layers[geoserverId]["color"])
+}
+
+
+function updateOpacityLayer(geoserverId){
+  var opacityValue = $( "#" + geoserverId + "-range").val();
+  window.layers[geoserverId]["layer"].setOpacity(parseFloat(opacityValue));
+}
+
 
 function buildLayerControl(addLayers){
   var overlays = {};

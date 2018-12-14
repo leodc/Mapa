@@ -27,7 +27,7 @@ function showResult(results){
   }
 
   $("#searchMessage").remove();
-  
+
   if(results.length == 0){
     var html = '<div class="alert alert-danger" id="searchMessage">No se encontro ninguna capa</div>';
     $("#resultHolder").prepend(html);
@@ -82,7 +82,9 @@ function addLayerToMap(geoserverId, color){
         $("#resultHolder").prepend(html);
       }else{
         var controlColor = color ? color:"#00cc99";
-        map.addWmsLayer(geoserverId, '<div class="row layerControlHolder"><div class="col-sm-1"><input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/></div><div class="col-sm-11 layerName">{0}</div></div>'.format(element.name_resource, geoserverId, controlColor), element.name_resource, color);
+        // map.addWmsLayer(geoserverId, '<div class="row layerControlHolder"><div class="col-sm-1"><input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/></div><div class="col-sm-11 layerName">{0}</div></div>'.format(element.name_resource, geoserverId, controlColor), element.name_resource, color);
+
+        map.addWmsLayer(geoserverId, element.name_resource, controlColor);
 
         $('#addLayerModal').modal("hide");
       }

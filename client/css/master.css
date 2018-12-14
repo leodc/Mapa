@@ -76,3 +76,11 @@ input[type="color"]{
   border: 0;
   font-weight: 600;
 }
+
+.leaflet-left{
+  max-width: 30%;
+}
+
+#myRange {
+  display: inline-flex;
+}
