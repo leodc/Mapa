@@ -46,14 +46,11 @@ function showResult(results){
       closeRow = true;
     }
 
-    // tag
-    html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}');\"><div class='col-sm-2'><span class='tag-icon tag-geoespacial'></span><br><strong><a href='{2}'>{1}</a></strong></div>".format(element.geoserver,element.organization.title, "url");
+    // tag and organization
+    html += "<div class='col-sm-6 result-element' onclick=\"addLayerToMap('{0}');\"><div class='col-sm-2'><span class='tag-icon tag-geoespacial'></span><br><strong><a href='{2}' target='_blank'>{1}</a></strong></div>".format(element.geoserver,element.organization.title, "https://datos.gob.mx/busca/organization/" + element.organization.title.toLowerCase());
 
     // resource info
     html += "<div class='col-sm-9'><p class='title'>{0}</p><small>{1}</small></div></div>".format(element.name_resource, element.description);
-
-    // organization
-    // html += "<div class='col-sm-2'></div></div>".format(element.organization.title, "url");
 
     if( closeRow ){
       html += "</div>";
@@ -81,10 +78,7 @@ function addLayerToMap(geoserverId, color){
         var html = '<div class="alert alert-danger" id="searchMessage">Error: La capa ya se encuentra en el mapa</div>';
         $("#resultHolder").prepend(html);
       }else{
-        var controlColor = color ? color:"#00cc99";
-        // map.addWmsLayer(geoserverId, '<div class="row layerControlHolder"><div class="col-sm-1"><input type="color" onchange="updateLayerColor(\'{1}\');" id="{1}-color" value="{2}"/></div><div class="col-sm-11 layerName">{0}</div></div>'.format(element.name_resource, geoserverId, controlColor), element.name_resource, color);
-
-        map.addWmsLayer(geoserverId, element.name_resource, controlColor);
+        map.addWmsLayer(geoserverId, element.name_resource, color);
 
         $('#addLayerModal').modal("hide");
       }
