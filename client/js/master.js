@@ -111,6 +111,8 @@ function getUrlParameter(sParam) {
 
 
 $(function(){
+  $("#welcomeModal").modal("show");
+
   window.layers = {};
 
   if (!String.prototype.format) {
