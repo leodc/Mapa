@@ -102,11 +102,15 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
     for (feature of content.features){
       var popContent = "<b>{0}</b><br><br>".format( window.layers[feature["id"].split(".")[0]]["title"] );
 
+      popContent += "<table class='table table-condensed table-striped'><tb>";
+
       for (key in feature.properties){
         if( key != "bbox" && feature.properties[key] != null ){
-          popContent += "<b>{0}</b>: {1}<br>".format(key, feature.properties[key]);
+          popContent += "<tr><th scope='row'>{0}</th><td>{1}</td></tr>".format(key, feature.properties[key]);
         }
       }
+
+      popContent += "</tb></table>";
 
       break;
     }
@@ -114,11 +118,6 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
     if( content.features.length > 0) {
 
       if( $("#popupContent").length == 0 ){
-        // L.responsivePopup()
-        //   .setLatLng(latlng)
-        //   .setContent("<div id='popupContent'>" + popContent + "</div>" )
-        //   .openOn(this._map);
-
         this._map.updatePopup("<div id='popupContent'>" + popContent + "</div>");
       }else{
         $("#popupContent").append("<hr>" + popContent);
